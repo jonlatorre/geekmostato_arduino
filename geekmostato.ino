@@ -4,6 +4,8 @@ int temperatura = 0; //variable para la temperatura
 int temperatura_limite = 16; //variable para la temperatura 
 boolean encendida = 0; //
 char inByte = 0;
+char decena = 0;
+char unidad = 0;
 
 long previousMillis = 0;        // will store last time LED was updated
 
@@ -25,21 +27,19 @@ void leer_temperatura () {
 
 int convertirTempChar(char ch) {
   int res;
-  //pasamos el char con el nmero a decimal (el cero es la posicin 48)
+  //pasamos el char con el numero en ASCII a decimal (el cero es la posicion ASCII 48)
   res = ch - 48  ;
-  //Ajusto la temperatura, si es menos de 5 ser 2ZX si es mayor de cinco ser 1X
-  if (res > 5 ) {
-    res = res + 10;
-  } else {
-    res = res + 20 ;
-  }
   return res;
 }
 
 void leer_limite () {
     establishContact();
-    inByte = Serial.read();
-    temperatura_limite = convertirTempChar(inByte);
+    decena = Serial.read();
+    unidad = Serial.read();
+    temperatura_limite = convertirTempChar(decena)*10+convertirTempChar(unidad);
+
+    /*Serial.print("Vamos a poner el limite: ");
+    Serial.println(temperatura_limite);*/
     //devolvemos 1 para decir que todo a ido OK
     Serial.println("1");
 }
